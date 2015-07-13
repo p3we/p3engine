@@ -1,6 +1,17 @@
-/* File: collision.hpp
- * Date: 12.09-.010
- * (c) Artur Sobierak <asobierak@gmail.com>
+/*
+ * (C) Copyright 2010 Artur Sobierak <asobierak@gmail.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #ifndef _COLLISION_HEADER_
@@ -13,22 +24,22 @@
 
 namespace pf
 {
-  class CCollisionPoint : public cAbstractPoint {
+  class CCollisionPoint : public CAbstractPoint {
   public:
-	CCollisionPoint(iCollisionManager* cmgr, const gf::CVector4f& p);
+	CCollisionPoint(ICollisionManager* cmgr, const gf::CVector4f& p);
 	virtual ~CCollisionPoint();
 
 	bool move(gf::CVector4f& v);
 
   protected:
-    iCollisionManager* m_cmgr;
+	ICollisionManager* m_cmgr;
   };
 
-  class CCollisionWall : public cAbstractWall {
+  class CCollisionWall : public CAbstractWall {
   public:
 	CCollisionWall();
 	CCollisionWall(
-		iCollisionManager* cmgr, const gf::CVector4f& p,
+		ICollisionManager* cmgr, const gf::CVector4f& p,
 		const gf::CVector4f& n, const gf::CVector2f& s
     );
 	virtual ~CCollisionWall();
@@ -42,7 +53,7 @@ namespace pf
 	void setSize(const gf::CVector2f& s);
 
   protected:
-    iCollisionManager* m_cmgr;
+	ICollisionManager* m_cmgr;
 
   private:
 	gf::CVector4f m_front;
@@ -50,10 +61,10 @@ namespace pf
 	gf::CVector2f m_size;
   };
 
-  class CCollisionBox : public cAbstractBox {
+  class CCollisionBox : public CAbstractBox {
   public:
 	CCollisionBox(
-		iCollisionManager* cmgr, const gf::CVector4f& p, const gf::CVector4f& s
+		ICollisionManager* cmgr, const gf::CVector4f& p, const gf::CVector4f& s
     );
 	virtual ~CCollisionBox();
 
@@ -67,10 +78,10 @@ namespace pf
 	void setUp(const gf::CVector4f& u);
 	void setSize(const gf::CVector4f& s);
 
-    const cAbstractWall& getWall(int i) const;
+	const CAbstractWall& getWall(int i) const;
 
   protected:
-    iCollisionManager* m_cmgr;
+	ICollisionManager* m_cmgr;
     mutable bool m_eval;
     void eval() const;
 
@@ -81,30 +92,30 @@ namespace pf
 	mutable CCollisionWall m_wall[6];
   };
 
-  class CCollisionManager : public iCollisionManager {
+  class CCollisionManager : public ICollisionManager {
   public:
 	CCollisionManager();
 	virtual ~CCollisionManager();
 
-    cAbstractPoint* addPoint();
-	cAbstractWall* addWall(const gf::CVector4f& n, const gf::CVector2f& s);
-	cAbstractBox* addBox(const gf::CVector4f& s);
-    void delPoint(cAbstractPoint* point);
-    void delWall(cAbstractWall* wall);
-    void delBox(cAbstractBox* box);
+	CAbstractPoint* addPoint();
+	CAbstractWall* addWall(const gf::CVector4f& n, const gf::CVector2f& s);
+	CAbstractBox* addBox(const gf::CVector4f& s);
+	void delPoint(CAbstractPoint* point);
+	void delWall(CAbstractWall* wall);
+	void delBox(CAbstractBox* box);
 
-	bool move(const cAbstractPoint* obj, gf::CVector4f& v);
+	bool move(const CAbstractPoint* obj, gf::CVector4f& v);
 	int select(const gf::CVector4f& p, const gf::CVector4f& v);
 
   protected:
-	bool checkWall(const cAbstractWall* obj, const gf::CVector4f& p1, const gf::CVector4f& vec);
-	bool checkBox(const cAbstractBox* obj, const gf::CVector4f& p1, gf::CVector4f& vec);
+	bool checkWall(const CAbstractWall* obj, const gf::CVector4f& p1, const gf::CVector4f& vec);
+	bool checkBox(const CAbstractBox* obj, const gf::CVector4f& p1, gf::CVector4f& vec);
 
   private:
-    gf::iLogger& m_log;
-    std::vector<cAbstractPoint*> m_point;
-    std::vector<cAbstractWall*> m_wall;
-    std::vector<cAbstractBox*> m_box;
+	gf::ILogger& m_log;
+	std::vector<CAbstractPoint*> m_point;
+	std::vector<CAbstractWall*> m_wall;
+	std::vector<CAbstractBox*> m_box;
   };
 }
 

@@ -50,7 +50,7 @@ void CLoggerEntry::setContent(const string& content){
   m_content = content;
 }
 
-iLoggerEntry& CLoggerEntry::add(const char* arg){
+ILoggerEntry& CLoggerEntry::add(const char* arg){
     m_content.append(arg);
     return *this;
 }
@@ -59,70 +59,70 @@ void CLoggerEntry::clear(){
   m_content.clear();
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const char* arg){
+ILoggerEntry& CLoggerEntry::operator<<(const char* arg){
     return add(arg);
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const std::string& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const std::string& arg){
     m_content.append(arg);
     return *this;
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const char& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const char& arg){
     m_content.append(&arg, 1);
     return *this;
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const int& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const int& arg){
     char buff[16];
     sprintf(buff, "%d", arg);
     m_content.append(buff);
     return *this;
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const unsigned int& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const unsigned int& arg){
     char buff[16];
     sprintf(buff, "%u", arg);
     m_content.append(buff);
     return *this;
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const long& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const long& arg){
     char buff[24];
     sprintf(buff, "%ld", arg);
     m_content.append(buff);
     return *this;
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const unsigned long& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const unsigned long& arg){
     char buff[24];
     sprintf(buff, "%lu", arg);
     m_content.append(buff);
     return *this;
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const float& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const float& arg){
     char buff[16];
     sprintf(buff, "%f", arg);
     m_content.append(buff);
     return *this;
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const double& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const double& arg){
     char buff[24];
     sprintf(buff, "%g", arg);
     m_content.append(buff);
     return *this;
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const long double& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const long double& arg){
     char buff[24];
     sprintf(buff, "%Lg", arg);
     m_content.append(buff);
     return *this;
 }
 
-iLoggerEntry& CLoggerEntry::operator<<(const bool& arg){
+ILoggerEntry& CLoggerEntry::operator<<(const bool& arg){
     arg ? m_content.append("TRUE") : m_content.append("FALSE");
     return *this;
 }
@@ -172,7 +172,7 @@ CLogger::~CLogger(){
   }
 }
 
-void CLogger::append(const iLoggerEntry& entry){
+void CLogger::append(const ILoggerEntry& entry){
   m_buffer.push(&entry);
 }
 
@@ -197,7 +197,7 @@ void CLogger::flush(){
   fflush(stdout);
 }
 
-void CLogger::msg(const iLoggerEntry& entry){
+void CLogger::msg(const ILoggerEntry& entry){
   append(entry);;
   flush();
 }

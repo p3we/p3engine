@@ -1,7 +1,18 @@
-/* File: example.hpp
- * Date: 28.08.2010
+/*
+ * (C) Copyright 2010 Artur Sobierak <asobierak@gmail.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 
 #ifndef _EXAMPLE_HEADER_
 #define _EXAMPLE_HEADER_
@@ -15,16 +26,16 @@
 
 class CPlayer {
 public:
-  CPlayer(gf::CAbstractCamera* camera, pf::cAbstractPoint* point);
+  CPlayer(gf::CAbstractCamera* camera, pf::CAbstractPoint* point);
   virtual ~CPlayer();
 
   virtual gf::CAbstractCamera* getCamera();
-  virtual pf::cAbstractPoint* getPoint();
+  virtual pf::CAbstractPoint* getPoint();
   virtual float getSpeed() const;
   virtual float getAlcohol() const;
 
   virtual void setCamera(gf::CAbstractCamera* camera);
-  virtual void setPoint(pf::cAbstractPoint* point);
+  virtual void setPoint(pf::CAbstractPoint* point);
   virtual void setSpeed(float speed);
   virtual void setAlcohol(float alcohol);
 
@@ -33,9 +44,9 @@ public:
   virtual void warp(gf::IDevice& dev);
 
 private:
-  gf::iLogger& m_log;
+  gf::ILogger& m_log;
   gf::CAbstractCamera* m_camera;
-  pf::cAbstractPoint* m_point;
+  pf::CAbstractPoint* m_point;
 
   float m_cameraSpeed;
   float m_mouseSpeed;
@@ -44,7 +55,7 @@ private:
 
 class CBottle {
 public:
-  CBottle(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr);
+  CBottle(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr);
   virtual ~CBottle();
 
   virtual const std::string& getName() const;
@@ -56,15 +67,15 @@ public:
   virtual void setPosition(const gf::CVector4f& p);
 
   virtual const gf::CAbstractNode* getSceneNode() const;
-  virtual const pf::cAbstractBox* getCollisionBox() const;
+  virtual const pf::CAbstractBox* getCollisionBox() const;
 
 protected:
   gf::CAbstractNode* m_sceneNode;
-  pf::cAbstractBox* m_collisionBox;
+  pf::CAbstractBox* m_collisionBox;
 
 private:
   gf::ISceneManager* m_smgr;
-  pf::iCollisionManager* m_cmgr;
+  pf::ICollisionManager* m_cmgr;
   std::string m_name;
   float m_alcohol;
   gf::CVector4f m_position;
@@ -72,13 +83,13 @@ private:
 
 class CBottleHeineken : public CBottle {
 public:
-  CBottleHeineken(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr);
+  CBottleHeineken(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr);
   virtual ~CBottleHeineken();
 };
 
 class CBottleWine : public CBottle {
 public:
-  CBottleWine(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr);
+  CBottleWine(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr);
   virtual ~CBottleWine();
 };
 
@@ -100,15 +111,15 @@ private:
   gf::smart_ptr<CPlayer> m_player;
 
   // Pomieszczenie
-  void build_room(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr);
+  void build_room(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr);
 
   // Alkohole
   std::vector< gf::smart_ptr<CBottle> > m_bottle;
   bool addBottle(CBottle* bottle);
   bool delBottle(CBottle* bottle);
   CBottle* getBottle(int id);
-  void build_alcohol(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr);
-  CBottle* random_bottle(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr);
+  void build_alcohol(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr);
+  CBottle* random_bottle(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr);
 
   // HUD
   gf::CAbstractNode* m_cursorNode;

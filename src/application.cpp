@@ -79,14 +79,14 @@ void CApplication::addSceneManager(ISceneManager* smgr){
   m_scene.push_back(smart_ptr<ISceneManager>(smgr));
 }
 
-void CApplication::addCollisionManager(iCollisionManager* cmgr){
-  m_collision.push_back(smart_ptr<iCollisionManager>(cmgr));
+void CApplication::addCollisionManager(ICollisionManager* cmgr){
+  m_collision.push_back(smart_ptr<ICollisionManager>(cmgr));
 }
 
 ISceneManager* CApplication::getSceneManager(int i){
   return m_scene.at(i).entity();
 }
 
-iCollisionManager* CApplication::getCollisionManager(int i){
+ICollisionManager* CApplication::getCollisionManager(int i){
   return m_collision.at(i).entity();
 }

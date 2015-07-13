@@ -13,29 +13,29 @@ using namespace gf;
 /* ----------------------------------------------------------------------------
  * cAbstractPrimitive
  */
-cAbstractPrimitive::cAbstractPrimitive() : m_position(0.0f,0.0f,0.0f,1.0f){
+CAbstractPrimitive::CAbstractPrimitive() : m_position(0.0f,0.0f,0.0f,1.0f){
   m_id = ++m_counter;
 }
 
-cAbstractPrimitive::~cAbstractPrimitive(){
+CAbstractPrimitive::~CAbstractPrimitive(){
   // pass
 }
 
-int cAbstractPrimitive::m_counter = 0;
+int CAbstractPrimitive::m_counter = 0;
 
-int cAbstractPrimitive::getId() const {
+int CAbstractPrimitive::getId() const {
   return m_id;
 }
 
-const CVector4f& cAbstractPrimitive::getPosition() const {
+const CVector4f& CAbstractPrimitive::getPosition() const {
   return m_position;
 };
 
-void cAbstractPrimitive::setId(int id){
+void CAbstractPrimitive::setId(int id){
   m_id = id;
 }
 
-void cAbstractPrimitive::setPosition(const CVector4f& p){
+void CAbstractPrimitive::setPosition(const CVector4f& p){
   m_position = p;
 }
 // <--
@@ -43,7 +43,7 @@ void cAbstractPrimitive::setPosition(const CVector4f& p){
 /* ----------------------------------------------------------------------------
  * cCollisionPoint
  */
-CCollisionPoint::CCollisionPoint(iCollisionManager* cmgr, const CVector4f& p)
+CCollisionPoint::CCollisionPoint(ICollisionManager* cmgr, const CVector4f& p)
 {
   m_cmgr = cmgr;
   setPosition(p);
@@ -69,7 +69,7 @@ CCollisionWall::CCollisionWall(){
   m_size = CVector2f(1.0f, 1.0f);
 }
 
-CCollisionWall::CCollisionWall(iCollisionManager* cmgr, const CVector4f& p,
+CCollisionWall::CCollisionWall(ICollisionManager* cmgr, const CVector4f& p,
     const CVector4f& n, const CVector2f& s)
 {
   m_cmgr = cmgr;
@@ -110,7 +110,7 @@ void CCollisionWall::setSize(const CVector2f& s){
 /* ----------------------------------------------------------------------------
  * cCollisionBox
  */
-CCollisionBox::CCollisionBox(iCollisionManager* cmgr, const CVector4f& p,
+CCollisionBox::CCollisionBox(ICollisionManager* cmgr, const CVector4f& p,
     const CVector4f& s)
 {
   m_cmgr = cmgr;
@@ -126,7 +126,7 @@ CCollisionBox::~CCollisionBox(){
 }
 
 const CVector4f& CCollisionBox::getPosition() const {
-  return cAbstractPrimitive::getPosition();
+  return CAbstractPrimitive::getPosition();
 }
 
 const CVector4f& CCollisionBox::getFront() const {
@@ -142,7 +142,7 @@ const CVector4f& CCollisionBox::getSize() const {
 }
 
 void CCollisionBox::setPosition(const gf::CVector4f& p){
-  cAbstractPrimitive::setPosition(p);
+  CAbstractPrimitive::setPosition(p);
   m_eval = true;
 }
 
@@ -161,7 +161,7 @@ void CCollisionBox::setSize(const gf::CVector4f& s){
   m_eval = true;
 }
 
-const cAbstractWall& CCollisionBox::getWall(int i) const {
+const CAbstractWall& CCollisionBox::getWall(int i) const {
   eval();
   return m_wall[i];
 }
@@ -218,41 +218,41 @@ CCollisionManager::CCollisionManager() : m_log(CLog::instance())
 }
 
 CCollisionManager::~CCollisionManager() {
-  for(vector<cAbstractPoint*>::iterator i=m_point.begin(); i!=m_point.end(); ++i)
+  for(vector<CAbstractPoint*>::iterator i=m_point.begin(); i!=m_point.end(); ++i)
   {
     delete *i;
   }
-  for(vector<cAbstractWall*>::iterator i=m_wall.begin(); i!=m_wall.end(); ++i)
+  for(vector<CAbstractWall*>::iterator i=m_wall.begin(); i!=m_wall.end(); ++i)
   {
     delete *i;
   }
-  for(vector<cAbstractBox*>::iterator i=m_box.begin(); i!=m_box.end(); ++i)
+  for(vector<CAbstractBox*>::iterator i=m_box.begin(); i!=m_box.end(); ++i)
   {
     delete *i;
   }
 }
 
-cAbstractPoint* CCollisionManager::addPoint(){
-  cAbstractPoint* ptr = new CCollisionPoint(this, CVector4f(0.0f, 0.0f, 0.0f));
+CAbstractPoint* CCollisionManager::addPoint(){
+  CAbstractPoint* ptr = new CCollisionPoint(this, CVector4f(0.0f, 0.0f, 0.0f));
   m_point.push_back(ptr);
   return ptr;
 }
 
-cAbstractWall* CCollisionManager::addWall(const CVector4f& n, const CVector2f& s){
-  cAbstractWall* ptr = new CCollisionWall(this, CVector4f(0.0f,0.0f,0.0f), n, s);
+CAbstractWall* CCollisionManager::addWall(const CVector4f& n, const CVector2f& s){
+  CAbstractWall* ptr = new CCollisionWall(this, CVector4f(0.0f,0.0f,0.0f), n, s);
   m_wall.push_back(ptr);
   return ptr;
 }
 
-cAbstractBox* CCollisionManager::addBox(const CVector4f& s){
-  cAbstractBox* ptr = new CCollisionBox(this, CVector4f(0.0f,0.0f,0.0f), s);
+CAbstractBox* CCollisionManager::addBox(const CVector4f& s){
+  CAbstractBox* ptr = new CCollisionBox(this, CVector4f(0.0f,0.0f,0.0f), s);
   m_box.push_back(ptr);
   return ptr;
 }
 
-void CCollisionManager::delPoint(cAbstractPoint* point){
+void CCollisionManager::delPoint(CAbstractPoint* point){
   const int id = point->getId();
-  vector<cAbstractPoint*>::iterator itr;
+  vector<CAbstractPoint*>::iterator itr;
   for(itr=m_point.begin(); itr!=m_point.end(); ++itr){
     if(id == (*itr)->getId()){
       delete *itr;
@@ -262,9 +262,9 @@ void CCollisionManager::delPoint(cAbstractPoint* point){
   }
 }
 
-void CCollisionManager::delWall(cAbstractWall* wall){
+void CCollisionManager::delWall(CAbstractWall* wall){
   const int id = wall->getId();
-  vector<cAbstractWall*>::iterator itr;
+  vector<CAbstractWall*>::iterator itr;
   for(itr=m_wall.begin(); itr!=m_wall.end(); ++itr){
     if(id == (*itr)->getId()){
       delete *itr;
@@ -274,9 +274,9 @@ void CCollisionManager::delWall(cAbstractWall* wall){
   }
 }
 
-void CCollisionManager::delBox(cAbstractBox* box){
+void CCollisionManager::delBox(CAbstractBox* box){
   const int id = box->getId();
-  vector<cAbstractBox*>::iterator itr;
+  vector<CAbstractBox*>::iterator itr;
   for(itr=m_box.begin(); itr!=m_box.end(); ++itr){
     if(id == (*itr)->getId()){
       delete *itr;
@@ -286,10 +286,10 @@ void CCollisionManager::delBox(cAbstractBox* box){
   }
 }
 
-bool CCollisionManager::move(const cAbstractPoint* obj, gf::CVector4f& v)
+bool CCollisionManager::move(const CAbstractPoint* obj, gf::CVector4f& v)
 {
   // Kolizja Punkt-Sciana
-  for(vector<cAbstractWall*>::iterator i=m_wall.begin(); i!=m_wall.end(); ++i)
+  for(vector<CAbstractWall*>::iterator i=m_wall.begin(); i!=m_wall.end(); ++i)
   {
     if(!checkWall(*i, obj->getPosition(), v)){
       return false;
@@ -297,7 +297,7 @@ bool CCollisionManager::move(const cAbstractPoint* obj, gf::CVector4f& v)
   }
 
   // Kolizja Punkt-Prostopadloscian
-  for(vector<cAbstractBox*>::iterator i=m_box.begin(); i!=m_box.end(); ++i)
+  for(vector<CAbstractBox*>::iterator i=m_box.begin(); i!=m_box.end(); ++i)
   {
     if(!checkBox(*i, obj->getPosition(), v)){
       return false;
@@ -312,7 +312,7 @@ int CCollisionManager::select(const gf::CVector4f& pos, const gf::CVector4f& vec
   int id = 0;
   float length = 0.0f;
 
-  for(vector<cAbstractWall*>::iterator i=m_wall.begin(); i!=m_wall.end(); ++i)
+  for(vector<CAbstractWall*>::iterator i=m_wall.begin(); i!=m_wall.end(); ++i)
   {
     if(!checkWall(*i, pos, vec) &&
        (id==0 || CVector4f::mod(pos - (*i)->getPosition()) < length))
@@ -322,10 +322,10 @@ int CCollisionManager::select(const gf::CVector4f& pos, const gf::CVector4f& vec
     }
   }
 
-  for(vector<cAbstractBox*>::iterator i=m_box.begin(); i!=m_box.end(); ++i)
+  for(vector<CAbstractBox*>::iterator i=m_box.begin(); i!=m_box.end(); ++i)
   {
     for(int j=0; j<6; ++j){
-      const cAbstractWall* wall = &(*i)->getWall(j);
+      const CAbstractWall* wall = &(*i)->getWall(j);
 
       if(!checkWall(wall, pos, vec) &&
          (id==0 || CVector4f::mod(pos - wall->getPosition()) < length))
@@ -339,7 +339,7 @@ int CCollisionManager::select(const gf::CVector4f& pos, const gf::CVector4f& vec
   return id;
 }
 
-bool CCollisionManager::checkWall(const cAbstractWall* obj, const gf::CVector4f& p1,
+bool CCollisionManager::checkWall(const CAbstractWall* obj, const gf::CVector4f& p1,
     const gf::CVector4f& vec)
 {
   const CVector4f& p2 = p1 + vec;
@@ -369,11 +369,11 @@ bool CCollisionManager::checkWall(const cAbstractWall* obj, const gf::CVector4f&
   return true;
 }
 
-bool CCollisionManager::checkBox(const cAbstractBox* obj, const gf::CVector4f& p1,
+bool CCollisionManager::checkBox(const CAbstractBox* obj, const gf::CVector4f& p1,
     gf::CVector4f& vec)
 {
   for(int i=0; i<6; ++i){
-    const cAbstractWall* wall = &obj->getWall(i);
+    const CAbstractWall* wall = &obj->getWall(i);
     if(!checkWall(wall, p1, vec)){
       vec -= wall->getFront()*CVector4f::dot(wall->getFront(), vec);
       checkBox(obj, p1, vec);

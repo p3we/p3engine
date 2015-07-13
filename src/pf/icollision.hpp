@@ -1,6 +1,17 @@
-/* File: icollision.hpp
- * Date: 12.09-.010
- * (c) Artur Sobierak <asobierak@gmail.com>
+/*
+ * (C) Copyright 2010 Artur Sobierak <asobierak@gmail.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #ifndef _ICOLLISION_HEADER_
@@ -10,10 +21,10 @@
 
 namespace pf
 {
-  class cAbstractPrimitive {
+  class CAbstractPrimitive {
   public:
-    cAbstractPrimitive();
-    virtual ~cAbstractPrimitive();
+	CAbstractPrimitive();
+	virtual ~CAbstractPrimitive();
 
     virtual int getId() const;
     virtual const gf::CVector4f& getPosition() const;
@@ -29,16 +40,16 @@ namespace pf
     gf::CVector4f m_position;
   };
 
-  class cAbstractPoint : public cAbstractPrimitive {
+  class CAbstractPoint : public CAbstractPrimitive {
   public:
-    virtual ~cAbstractPoint(){};
+	virtual ~CAbstractPoint(){}
 
     virtual bool move(gf::CVector4f& v) = 0;
   };
 
-  class cAbstractWall : public cAbstractPrimitive {
+  class CAbstractWall : public CAbstractPrimitive {
   public:
-    virtual ~cAbstractWall(){};
+	virtual ~CAbstractWall(){}
 
     virtual const gf::CVector4f& getFront() const = 0;
     virtual const gf::CVector4f& getUp() const = 0;
@@ -49,9 +60,9 @@ namespace pf
     virtual void setSize(const gf::CVector2f& s) = 0;
   };
 
-  class cAbstractBox : public cAbstractPrimitive {
+  class CAbstractBox : public CAbstractPrimitive {
   public:
-    virtual ~cAbstractBox(){};
+	virtual ~CAbstractBox(){}
 
     virtual const gf::CVector4f& getFront() const = 0;
     virtual const gf::CVector4f& getUp() const = 0;
@@ -61,21 +72,21 @@ namespace pf
     virtual void setUp(const gf::CVector4f& u) = 0;
     virtual void setSize(const gf::CVector4f& s) = 0;
 
-    virtual const cAbstractWall& getWall(int i) const = 0;
+	virtual const CAbstractWall& getWall(int i) const = 0;
   };
 
-  class iCollisionManager {
+  class ICollisionManager {
   public:
-    virtual ~iCollisionManager(){};
+	virtual ~ICollisionManager(){}
 
-    virtual cAbstractPoint* addPoint() = 0;
-    virtual cAbstractWall* addWall(const gf::CVector4f& n, const gf::CVector2f& s) = 0;
-    virtual cAbstractBox* addBox(const gf::CVector4f& s) = 0;
-    virtual void delPoint(cAbstractPoint* point) = 0;
-    virtual void delWall(cAbstractWall* wall) = 0;
-    virtual void delBox(cAbstractBox* box) = 0;
+	virtual CAbstractPoint* addPoint() = 0;
+	virtual CAbstractWall* addWall(const gf::CVector4f& n, const gf::CVector2f& s) = 0;
+	virtual CAbstractBox* addBox(const gf::CVector4f& s) = 0;
+	virtual void delPoint(CAbstractPoint* point) = 0;
+	virtual void delWall(CAbstractWall* wall) = 0;
+	virtual void delBox(CAbstractBox* box) = 0;
 
-    virtual bool move(const cAbstractPoint* obj, gf::CVector4f& v) = 0;
+	virtual bool move(const CAbstractPoint* obj, gf::CVector4f& v) = 0;
 
     virtual int select(const gf::CVector4f& p, const gf::CVector4f& v) = 0;
   };

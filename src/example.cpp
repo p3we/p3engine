@@ -11,7 +11,7 @@ using namespace pf;
 /* ----------------------------------------------------------------------------
  * CPlayer
  */
-CPlayer::CPlayer(gf::CAbstractCamera* camera, pf::cAbstractPoint* point)
+CPlayer::CPlayer(gf::CAbstractCamera* camera, pf::CAbstractPoint* point)
 : m_log(gf::CLog::instance()), m_camera(camera), m_point(point)
 {
   m_cameraSpeed = 10.0f;
@@ -28,7 +28,7 @@ CAbstractCamera* CPlayer::getCamera(){
   return m_camera;
 }
 
-cAbstractPoint* CPlayer::getPoint(){
+CAbstractPoint* CPlayer::getPoint(){
   return m_point;
 }
 
@@ -44,7 +44,7 @@ void CPlayer::setCamera(CAbstractCamera* camera){
   m_camera = camera;
 }
 
-void CPlayer::setPoint(cAbstractPoint* point){
+void CPlayer::setPoint(CAbstractPoint* point){
   m_point = point;
 }
 
@@ -109,7 +109,7 @@ void CPlayer::warp(IDevice& dev){
 /* ----------------------------------------------------------------------------
  * CBottle
  */
-CBottle::CBottle(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr){
+CBottle::CBottle(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr){
   m_smgr = smgr;
   m_cmgr = cmgr;
   m_sceneNode = 0;
@@ -160,7 +160,7 @@ const CAbstractNode* CBottle::getSceneNode() const {
   return m_sceneNode;
 }
 
-const cAbstractBox* CBottle::getCollisionBox() const {
+const CAbstractBox* CBottle::getCollisionBox() const {
   return m_collisionBox;
 }
 // <--
@@ -168,7 +168,7 @@ const cAbstractBox* CBottle::getCollisionBox() const {
 /* ----------------------------------------------------------------------------
  * CBottleHeineken
  */
-CBottleHeineken::CBottleHeineken(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr)
+CBottleHeineken::CBottleHeineken(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr)
 : CBottle(smgr,cmgr)
 {
   m_sceneNode = smgr->addSceneNode(
@@ -198,7 +198,7 @@ CBottleHeineken::~CBottleHeineken(){}
 /* ----------------------------------------------------------------------------
  * CBottleWine
  */
-CBottleWine::CBottleWine(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr)
+CBottleWine::CBottleWine(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr)
 : CBottle(smgr,cmgr)
 {
   m_sceneNode = smgr->addSceneNode(
@@ -275,7 +275,7 @@ void CExample::create(){
 
   // Dodaj menadzery
   ISceneManager* smgr = 0;
-  iCollisionManager* cmgr = 0;
+  ICollisionManager* cmgr = 0;
 
   // Room
   addSceneManager((smgr = new CSceneManager(m_dev)));
@@ -284,7 +284,7 @@ void CExample::create(){
   // Gracz = Kamera + Punkt wykrywajacy kolizje
   CAbstractCamera* cam = smgr->addPerspectiveCamera(60.0f);
   smgr->setActiveCamera(cam);
-  cAbstractPoint* point = cmgr->addPoint();
+  CAbstractPoint* point = cmgr->addPoint();
   point->setPosition(CVector4f(0.0f, 5.0f, 12.0f));
   m_player = smart_ptr<CPlayer>(new CPlayer(cam,point));
 
@@ -362,9 +362,9 @@ void CExample::pause(bool enabled){
   }
 }
 
-void CExample::build_room(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr){
+void CExample::build_room(gf::ISceneManager* smgr, pf::ICollisionManager* cmgr){
   CAbstractNode* sceneNode = 0;
-  cAbstractPrimitive* collisionNode = 0;
+  CAbstractPrimitive* collisionNode = 0;
 
   // Pomieszczenie
   sceneNode = smgr->addSceneNode("data/floor.obj","data/floor.mtl","data/glsl/phong-2");
@@ -388,7 +388,7 @@ void CExample::build_room(gf::ISceneManager* smgr, pf::iCollisionManager* cmgr){
   collisionNode->setPosition(CVector4f(-6.9f, 4.0f, -9.0f));
 }
 
-void CExample::build_alcohol(ISceneManager* smgr, iCollisionManager* cmgr)
+void CExample::build_alcohol(ISceneManager* smgr, ICollisionManager* cmgr)
 {
   unsigned int slot_count = 92;
   CVector4f slot[] = {
@@ -608,7 +608,7 @@ void CExample::build_pause(ISceneManager* smgr){
   smgr->setEnabled(false);
 }
 
-CBottle* CExample::random_bottle(ISceneManager* smgr, iCollisionManager* cmgr){
+CBottle* CExample::random_bottle(ISceneManager* smgr, ICollisionManager* cmgr){
   CBottle* ptr = 0;
   unsigned int id = rand()%2;
 
@@ -678,7 +678,7 @@ void CExample::frame(){
     m_player->warp(m_dev);
 
     // Interakcja ze swiatem
-    iCollisionManager* cmgr = getCollisionManager(1);
+	ICollisionManager* cmgr = getCollisionManager(1);
     const CVector4f& pos = m_player->getCamera()->getPosition();
     const CVector4f& at = m_player->getCamera()->getLookAt();
     int id = cmgr->select(pos, CVector4f::norm(at-pos)*3.0f);

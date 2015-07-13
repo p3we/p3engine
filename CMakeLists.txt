@@ -22,6 +22,7 @@ endif()
 set(
   HEADER_FILES
   "${p3engine_SOURCE_DIR}/src/gf/common.hpp"
+  "${p3engine_SOURCE_DIR}/src/gf/ilogger.hpp"
   "${p3engine_SOURCE_DIR}/src/gf/logger.hpp"
   "${p3engine_SOURCE_DIR}/src/gf/iresource.hpp"
   "${p3engine_SOURCE_DIR}/src/gf/resource.hpp"
@@ -30,6 +31,7 @@ set(
   "${p3engine_SOURCE_DIR}/src/gf/iscene.hpp"
   "${p3engine_SOURCE_DIR}/src/gf/scene.hpp"
   "${p3engine_SOURCE_DIR}/src/pf/collision.hpp"
+  "${p3engine_SOURCE_DIR}/src/pf/icollision.hpp"
   "${p3engine_SOURCE_DIR}/src/application.hpp"
   "${p3engine_SOURCE_DIR}/src/example.hpp"
 )
