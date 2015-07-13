@@ -1,0 +1,11 @@
+# Blender3D MTL File: alkogaleria.blend
+# Material Count: 1
+newmtl bottle
+Ns 60.0
+Ka 0.5 0.5 0.5
+Kd 0.8 0.8 0.8
+Ks 2.0 2.0 2.0
+d 0.75
+map_Kd heineken.tga
+
+

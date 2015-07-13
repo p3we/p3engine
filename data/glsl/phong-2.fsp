@@ -1,0 +1,81 @@
+/* File: phong_1.fsp
+ */
+
+#version 120
+#define LIGHT_MAX 4
+
+// ----------------------------------------------------------------------------
+uniform int render;
+
+struct cGenericMaterial{
+  vec4 ambient;
+  vec4 diffuse;
+  vec4 specular;
+  float reflection;
+};
+uniform cGenericMaterial Material;
+
+struct cSceneLight{
+  vec4 position;
+  vec4 ambient;
+  vec4 diffuse;
+  vec4 specular;
+  float constAtt;
+  float linearAtt;
+  float quadraticAtt;
+};
+uniform cSceneLight Light[LIGHT_MAX];
+
+struct cSceneLightModel{
+  vec4 ambient;
+};
+uniform cSceneLightModel LightModel;
+
+// ----------------------------------------------------------------------------
+varying vec3 normal, eye, lightDir[LIGHT_MAX];
+varying float lightAtt[LIGHT_MAX];
+vec3 vertex;
+// ----------------------------------------------------------------------------
+
+uniform sampler2D tex;
+vec3 N, L, E;
+
+vec4 light(const int i)
+{
+  vec4 color = Material.ambient * Light[i].ambient;
+  
+  L = normalize(lightDir[i]);
+  
+  float NdotL = dot(N,L);
+  if(NdotL > 0.0){
+    color += Material.diffuse * Light[i].diffuse;
+    
+    vec3 R = reflect(-L, N);
+	float RdotE = pow(max(dot(R,E), 0.0), Material.reflection);
+    color += Material.specular * Light[i].specular * RdotE;
+  }
+  
+  return color;
+}	
+
+void main()
+{
+  N = normalize(normal);
+  E = normalize(eye);
+
+  if(render==0||render==1){
+        gl_FragColor = Material.ambient;
+  }
+  else if(render==2){
+        gl_FragColor = light(0)*lightAtt[0] + light(1)*lightAtt[1];
+  }
+  else if(render==3){
+        vec4 t = texture2D(tex, gl_TexCoord[0].st);
+        vec4 c = light(0)*lightAtt[0] + light(1)*lightAtt[1];
+		c += Material.ambient*LightModel.ambient;
+        gl_FragColor = vec4(t.rgb*c.rgb, t.a*Material.diffuse.a);
+  }
+  else{
+        gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+  }
+}

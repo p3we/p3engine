@@ -1,0 +1,43 @@
+/* File: gauss_blur-25.fsp
+ * (c) Artur Sobierak <asobierak@gmail.com>
+ */
+
+#version 120
+ 
+// ----------------------------------------------------------------------------
+struct cFrameBuffer {
+  float width;
+  float height;
+};
+uniform cFrameBuffer fb;
+// ----------------------------------------------------------------------------
+
+float kernel[25] = float[](
+  1.0, 4.0,  7.0,  4.0,  1.0,
+  4.0, 16.0, 26.0, 16.0, 4.0,
+  7.0, 26.0, 41.0, 26.0, 7.0,
+  4.0, 16.0, 26.0, 16.0, 4.0,
+  1.0, 4.0,  7.0,  4.0,  1.0
+);
+float kernel_sum = 273.0;
+
+uniform sampler2D tex;
+  
+void main(void)
+{
+  vec2 step = vec2(1.0/fb.width, 1.0/fb.height);
+  
+  vec4 texel = vec4(0.0);
+  
+  int i,j;
+  for(i=0; i<5; ++i){
+    vec2 offset = vec2(0.0, float((i-2))*step.y);
+    for(j=0; j<5; ++j){
+      offset.x = float((j-2))*step.x;
+      vec4 tmp = texture2D(tex, vec2(gl_TexCoord[0].st + offset));
+      texel += tmp * (kernel[i*5+j]/kernel_sum);
+    }
+  }
+  
+  gl_FragColor = texel;
+}

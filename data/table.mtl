@@ -1,0 +1,13 @@
+# Blender3D MTL File: alkogaleria.blend
+# Material Count: 1
+newmtl table_table.tga
+Ns 60.784314
+Ka 0.200000 0.200000 0.200000
+Kd 0.697395 0.697395 0.697395
+Ks 0.800000 0.800000 0.800000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd table.tga
+
+

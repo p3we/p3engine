@@ -1,0 +1,13 @@
+# Blender3D MTL File: alkogaleria.blend
+# Material Count: 1
+newmtl floor_floor.tga
+Ns 13.725490
+Ka 0.320258 0.320258 0.320258
+Kd 0.699945 0.699945 0.699945
+Ks 0.500000 0.411765 0.221569
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd floor.tga
+
+

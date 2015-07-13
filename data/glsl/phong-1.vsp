@@ -1,0 +1,65 @@
+/* File: phong_1.vsp
+ * Cieniowanie phonga dla 1 swiatla
+ */
+
+#version 120
+#define LIGHT_MAX 4
+
+// ----------------------------------------------------------------------------
+uniform int render;
+
+struct cGenericMaterial{
+  vec4 ambient;
+  vec4 diffuse;
+  vec4 specular;
+  float reflection;
+};
+uniform cGenericMaterial Material;
+
+struct cSceneLight{
+  vec4 position;
+  vec4 ambient;
+  vec4 diffuse;
+  vec4 specular;
+  float constAtt;
+  float linearAtt;
+  float quadraticAtt;
+};
+uniform cSceneLight Light[LIGHT_MAX];
+
+struct cSceneLightModel{
+  vec4 ambient;
+};
+uniform cSceneLightModel LightModel;
+// ----------------------------------------------------------------------------
+varying vec3 normal, eye, lightDir[LIGHT_MAX];
+varying float lightAtt[LIGHT_MAX];
+vec3 vertex;
+// ----------------------------------------------------------------------------
+
+void light(const int i){
+  vec3 aux;
+  if(Light[i].position.w != 0.0){
+    aux = vec3(Light[i].position.xyz - vertex);
+    float dist = length(aux);
+    lightAtt[i] = 1.0/(Light[i].constAtt + Light[i].linearAtt*dist + Light[i].quadraticAtt*dist*dist);
+  }
+  else{
+    aux = vec3(Light[i].position.xyz);
+    lightAtt[i] = 1.0;
+  }
+  lightDir[i] = normalize(aux);    
+}
+
+void main(){
+  if(render > 1){
+    vertex = vec3(gl_ModelViewMatrix * gl_Vertex);
+    normal = normalize(gl_NormalMatrix * gl_Normal);
+    eye = -vertex;
+  
+    light(0);
+  }
+
+  gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
+  gl_Position = ftransform();
+}
